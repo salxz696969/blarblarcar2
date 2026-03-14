@@ -31,3 +31,4 @@ class RidePreferenceState extends ChangeNotifier {
     notifyListeners();
   }
 }
+
