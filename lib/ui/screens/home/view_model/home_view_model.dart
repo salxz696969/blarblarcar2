@@ -1,0 +1,22 @@
+import 'package:blabla/model/ride_pref/ride_pref.dart';
+import 'package:blabla/ui/states/ride_preference_state.dart';
+import 'package:flutter/material.dart';
+
+class HomeViewModel extends ChangeNotifier {
+  final RidePreferenceState ridePreferenceState;
+  HomeViewModel(this.ridePreferenceState);
+
+  List<RidePreference> get history =>
+      ridePreferenceState.history.reversed.toList();
+
+  RidePreference? get selectedPreference => ridePreferenceState.ridePreference;
+
+  void selectRidePreference(RidePreference preference) {
+    ridePreferenceState.setRidePreference(preference);
+    notifyListeners();
+  }
+
+  void refresh() {
+    notifyListeners();
+  }
+}

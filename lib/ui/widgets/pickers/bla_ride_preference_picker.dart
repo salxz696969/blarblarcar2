@@ -1,7 +1,6 @@
 import 'package:blabla/ui/widgets/buttons/bla_button.dart';
 import 'package:blabla/ui/widgets/display/bla_divider.dart';
 import 'package:flutter/material.dart';
-
 import '../../../model/ride/locations.dart';
 import '../../../model/ride_pref/ride_pref.dart';
 import '../../../services/ride_prefs_service.dart';
@@ -20,15 +19,14 @@ import 'bla_seat_picker.dart';
 ///   - A number of seats
 ///
 class BlaRidePreferencePicker extends StatefulWidget {
-  final RidePreference? initRidePreference; // optional initial preference.
+  final RidePreference? initRidePreference;
+  final ValueChanged<RidePreference> onRidePreferenceSelected;
 
   const BlaRidePreferencePicker({
     super.key,
     this.initRidePreference,
     required this.onRidePreferenceSelected,
   });
-
-  final ValueChanged<RidePreference> onRidePreferenceSelected;
 
   @override
   State<BlaRidePreferencePicker> createState() =>
@@ -77,13 +75,13 @@ class _BlaRidePreferencePickerState extends State<BlaRidePreferencePicker> {
   // ----------------------------------
 
   void onDeparturePressed() async {
-    // 1- Select a location
-    Location? selectedLocation = await Navigator.of(context).push<Location>(
+    final selectedLocation = await Navigator.of(context).push<Location>(
       AnimationUtils.createBottomToTopRoute(
-        BlaLocationPicker(initLocation: departure),
+        BlaLocationPicker(
+          initLocation: departure,
+        ),
       ),
     );
-
     // 2- Update the from if needed
     if (selectedLocation != null) {
       setState(() {
@@ -93,13 +91,13 @@ class _BlaRidePreferencePickerState extends State<BlaRidePreferencePicker> {
   }
 
   void onArrivalPressed() async {
-    // 1- Select a arrival
-    Location? selectedLocation = await Navigator.of(context).push<Location>(
+    final selectedLocation = await Navigator.of(context).push<Location>(
       AnimationUtils.createBottomToTopRoute(
-        BlaLocationPicker(initLocation: arrival),
+        BlaLocationPicker(
+          initLocation: arrival,
+        ),
       ),
     );
-
     // 2- Update the from if needed
     if (selectedLocation != null) {
       setState(() {

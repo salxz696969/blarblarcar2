@@ -2,27 +2,29 @@ import 'package:blabla/model/ride_pref/ride_pref.dart';
 import 'package:flutter/material.dart';
 
 class RidePreferenceState extends ChangeNotifier {
-  RidePreference? _ridePreference;
+  RidePreference? _currentRidePreference;
+  List<RidePreference> _history = [];
 
-  RidePreference? get ridePreference => _ridePreference;
+  RidePreference? get ridePreference => _currentRidePreference;
 
   void setRidePreference(RidePreference ridePreference) {
-    if (_ridePreference == ridePreference) return;
-    _ridePreference = ridePreference;
+    if (_currentRidePreference == ridePreference) return;
+    _currentRidePreference = ridePreference;
+    _history.add(ridePreference);
     notifyListeners();
   }
 
   void clearRidePreference() {
-    if (_ridePreference == null) return;
-    _ridePreference = null;
+    if (_currentRidePreference == null) return;
+    _currentRidePreference = null;
     notifyListeners();
   }
 
   void reverseLocation() {
-    final pref = _ridePreference;
+    final pref = _currentRidePreference;
     if (pref == null) return;
 
-    _ridePreference = RidePreference(
+    _currentRidePreference = RidePreference(
       departure: pref.arrival,
       departureDate: pref.departureDate,
       arrival: pref.departure,
@@ -30,5 +32,6 @@ class RidePreferenceState extends ChangeNotifier {
     );
     notifyListeners();
   }
-}
 
+  List<RidePreference> get history => _history;
+}
