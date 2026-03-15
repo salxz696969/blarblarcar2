@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 class HomeViewModel extends ChangeNotifier {
   final RidePreferenceState ridePreferenceState;
-  HomeViewModel(this.ridePreferenceState);
+  HomeViewModel({required this.ridePreferenceState});
 
   List<RidePreference> get history =>
       ridePreferenceState.history.reversed.toList();
@@ -13,10 +13,6 @@ class HomeViewModel extends ChangeNotifier {
 
   void selectRidePreference(RidePreference preference) {
     ridePreferenceState.setRidePreference(preference);
-    notifyListeners();
-  }
-
-  void refresh() {
     notifyListeners();
   }
 }

@@ -1,15 +1,16 @@
+import 'package:blabla/ui/states/ride_preference_state.dart';
 import 'package:blabla/ui/widgets/buttons/bla_button.dart';
 import 'package:blabla/ui/widgets/display/bla_divider.dart';
 import 'package:flutter/material.dart';
 import '../../../model/ride/locations.dart';
 import '../../../model/ride_pref/ride_pref.dart';
-import '../../../services/ride_prefs_service.dart';
 import '../../../utils/animations_util.dart';
 import '../../../utils/date_time_utils.dart';
 import '../../theme/theme.dart';
 import '../buttons/bla_icon_button.dart';
 import 'bla_location_picker.dart';
 import 'bla_seat_picker.dart';
+import 'package:provider/provider.dart';
 
 ///
 /// A  RidePreference Picker is a view to pick a RidePreference:
@@ -38,6 +39,7 @@ class _BlaRidePreferencePickerState extends State<BlaRidePreferencePicker> {
   late DateTime departureDate;
   Location? arrival;
   late int requestedSeats;
+  late RidePreferenceState ridePreferenceState;
 
   // ----------------------------------
   // Initialize the Form attributes
@@ -68,6 +70,7 @@ class _BlaRidePreferencePickerState extends State<BlaRidePreferencePicker> {
       arrival = null;
       requestedSeats = 1;
     }
+    ridePreferenceState = context.read<RidePreferenceState>();
   }
 
   // ----------------------------------
@@ -77,9 +80,7 @@ class _BlaRidePreferencePickerState extends State<BlaRidePreferencePicker> {
   void onDeparturePressed() async {
     final selectedLocation = await Navigator.of(context).push<Location>(
       AnimationUtils.createBottomToTopRoute(
-        BlaLocationPicker(
-          initLocation: departure,
-        ),
+        BlaLocationPicker(initLocation: departure),
       ),
     );
     // 2- Update the from if needed
@@ -93,9 +94,7 @@ class _BlaRidePreferencePickerState extends State<BlaRidePreferencePicker> {
   void onArrivalPressed() async {
     final selectedLocation = await Navigator.of(context).push<Location>(
       AnimationUtils.createBottomToTopRoute(
-        BlaLocationPicker(
-          initLocation: arrival,
-        ),
+        BlaLocationPicker(initLocation: arrival),
       ),
     );
     // 2- Update the from if needed
@@ -112,7 +111,7 @@ class _BlaRidePreferencePickerState extends State<BlaRidePreferencePicker> {
       AnimationUtils.createRightToLeftRoute(
         BlaSeatPicker(
           initSeats: requestedSeats,
-          maxSeat: RidePrefsService.maxAllowedSeats,
+          maxSeat: ridePreferenceState.maxAllowedSeats,
         ),
       ),
     );
@@ -121,6 +120,31 @@ class _BlaRidePreferencePickerState extends State<BlaRidePreferencePicker> {
     if (selectedSeatNumber != null && selectedSeatNumber != requestedSeats) {
       setState(() {
         requestedSeats = selectedSeatNumber;
+      });
+    }
+  }
+
+  void onDatePressed() async {
+    final now = DateTime.now();
+    final firstDate = DateTime(now.year, now.month, now.day);
+    final initialDate = departureDate.isBefore(firstDate)
+        ? firstDate
+        : departureDate;
+
+    final selectedDate = await showDatePicker(
+      context: context,
+      initialDate: initialDate,
+      firstDate: firstDate,
+      lastDate: firstDate.add(const Duration(days: 365)),
+    );
+
+    if (selectedDate != null) {
+      setState(() {
+        departureDate = DateTime(
+          selectedDate.year,
+          selectedDate.month,
+          selectedDate.day,
+        );
       });
     }
   }
@@ -210,7 +234,7 @@ class _BlaRidePreferencePickerState extends State<BlaRidePreferencePicker> {
               RidePrefInput(
                 title: dateLabel,
                 leftIcon: Icons.calendar_month,
-                onPressed: () => {},
+                onPressed: onDatePressed,
               ),
               const BlaDivider(),
 

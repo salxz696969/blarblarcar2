@@ -1,4 +1,3 @@
-import 'package:blabla/data/location_repository/location_repository.dart';
 import 'package:blabla/model/ride_pref/ride_pref.dart';
 import 'package:blabla/ui/screens/home/view_model/home_view_model.dart';
 import 'package:blabla/ui/screens/home/widgets/home_history_tile.dart';
@@ -14,19 +13,16 @@ const String blablaHomeImagePath = 'assets/images/blabla_home.png';
 class HomeContent extends StatelessWidget {
   const HomeContent({super.key});
 
-  Future<void> onRidePrefSelected(
+  void onRidePrefSelected(
     BuildContext context,
     HomeViewModel viewModel,
     RidePreference selectedPreference,
   ) async {
     viewModel.selectRidePreference(selectedPreference);
 
-    // await Navigator.of(
-    //   context,
-    // ).push(AnimationUtils.createBottomToTopRoute(RidesSelectionScreen()));
-
-    if (!context.mounted) return;
-    viewModel.refresh();
+    await Navigator.of(
+      context,
+    ).push(AnimationUtils.createBottomToTopRoute(RidesSelectionScreen()));
   }
 
   @override
