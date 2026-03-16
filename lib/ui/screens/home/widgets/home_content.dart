@@ -6,19 +6,19 @@ import 'package:blabla/ui/theme/theme.dart';
 import 'package:blabla/ui/widgets/pickers/bla_ride_preference_picker.dart';
 import 'package:blabla/utils/animations_util.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 const String blablaHomeImagePath = 'assets/images/blabla_home.png';
 
 class HomeContent extends StatelessWidget {
-  const HomeContent({super.key});
+  final HomeViewModel viewModel;
+  const HomeContent({super.key, required this.viewModel});
 
   void onRidePrefSelected(
     BuildContext context,
     HomeViewModel viewModel,
     RidePreference selectedPreference,
   ) async {
-    viewModel.selectRidePreference(selectedPreference);
+    viewModel.setRidePreference(selectedPreference);
 
     await Navigator.of(
       context,
@@ -27,8 +27,6 @@ class HomeContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = context.watch<HomeViewModel>();
-
     return Stack(
       children: [_buildBackground(), _buildForeground(context, viewModel)],
     );
@@ -37,6 +35,7 @@ class HomeContent extends StatelessWidget {
   Widget _buildForeground(BuildContext context, HomeViewModel viewModel) {
     return Column(
       children: [
+        // 1 - THE HEADER
         SizedBox(height: 16),
         Align(
           alignment: AlignmentGeometry.center,
@@ -46,22 +45,26 @@ class HomeContent extends StatelessWidget {
           ),
         ),
         SizedBox(height: 100),
+
         Container(
           margin: EdgeInsets.symmetric(horizontal: BlaSpacings.xxl),
           decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(16),
+            color: Colors.white, // White background
+            borderRadius: BorderRadius.circular(16), // Rounded corners
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              // 2 - THE FORM
               BlaRidePreferencePicker(
                 initRidePreference: viewModel.selectedPreference,
                 onRidePreferenceSelected: (pref) =>
                     onRidePrefSelected(context, viewModel, pref),
               ),
               SizedBox(height: BlaSpacings.m),
+
+              // 3 - THE HISTORY
               _buildHistory(context, viewModel),
             ],
           ),
@@ -71,11 +74,12 @@ class HomeContent extends StatelessWidget {
   }
 
   Widget _buildHistory(BuildContext context, HomeViewModel viewModel) {
+    // Reverse the history of preferences
     final history = viewModel.history;
     return SizedBox(
-      height: 200,
+      height: 200, // Set a fixed height
       child: ListView.builder(
-        shrinkWrap: true,
+        shrinkWrap: true, // Fix ListView height issue
         physics: AlwaysScrollableScrollPhysics(),
         itemCount: history.length,
         itemBuilder: (ctx, index) => HomeHistoryTile(
@@ -91,7 +95,10 @@ class HomeContent extends StatelessWidget {
     return SizedBox(
       width: double.infinity,
       height: 340,
-      child: Image.asset(blablaHomeImagePath, fit: BoxFit.cover),
+      child: Image.asset(
+        blablaHomeImagePath,
+        fit: BoxFit.cover, // Adjust image fit to cover the container
+      ),
     );
   }
 }

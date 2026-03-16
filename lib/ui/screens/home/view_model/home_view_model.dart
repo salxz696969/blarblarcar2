@@ -11,7 +11,7 @@ class HomeViewModel extends ChangeNotifier {
 
   RidePreference? get selectedPreference => ridePreferenceState.ridePreference;
 
-  void selectRidePreference(RidePreference preference) {
+  void setRidePreference(RidePreference preference) {
     ridePreferenceState.setRidePreference(preference);
     notifyListeners();
   }

@@ -12,13 +12,17 @@ class RidesSelectionScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final RidePreferenceState ridePreferenceState = context
         .watch<RidePreferenceState>();
-    final RideRepository rideRepository = context.watch<RideRepository>();
+
+    final RideRepository rideRepository = context.read<RideRepository>();
+
+    final RideSelectionViewModel viewModel = RideSelectionViewModel(
+      ridePreferenceState: ridePreferenceState,
+      rideRepository: rideRepository,
+    );
+    
     return ChangeNotifierProvider(
-      create: (context) => RideSelectionViewModel(
-        ridePreferenceState: ridePreferenceState,
-        rideRepository: rideRepository,
-      ),
-      child: RidesSelectionContent(),
+      create: (context) => viewModel,
+      child: RidesSelectionContent(viewModel: viewModel),
     );
   }
 }

@@ -6,7 +6,6 @@ import 'package:blabla/ui/screens/rides_selection/widgets/rides_selection_header
 import 'package:blabla/ui/screens/rides_selection/widgets/rides_selection_tile.dart';
 import 'package:blabla/utils/animations_util.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import '../../../theme/theme.dart';
 
 ///
@@ -16,7 +15,8 @@ import '../../../theme/theme.dart';
 ///   -  activate some filters.
 ///
 class RidesSelectionContent extends StatelessWidget {
-  const RidesSelectionContent({super.key});
+  final RideSelectionViewModel viewModel;
+  const RidesSelectionContent({super.key, required this.viewModel});
 
   void onBackTap(BuildContext context) {
     Navigator.pop(context);
@@ -26,13 +26,16 @@ class RidesSelectionContent extends StatelessWidget {
     // TODO
   }
 
-  void onRideSelected(RideSelectionViewModel viewModel, Ride ride) {}
+  void onRideSelected(RideSelectionViewModel viewModel, Ride ride) {
+    // Later
+  }
 
   void onPreferencePressed(
     BuildContext context,
     RideSelectionViewModel viewModel,
   ) async {
-    final RidePreference? newPreference = await Navigator.of(context)
+    // 1 - Navigate to the rides preference picker
+    RidePreference? newPreference = await Navigator.of(context)
         .push<RidePreference>(
           AnimationUtils.createRightToLeftRoute(
             RidePreferenceModal(
@@ -42,13 +45,15 @@ class RidesSelectionContent extends StatelessWidget {
         );
 
     if (newPreference != null) {
+      // 2 - Ask the service to update the current preference
       viewModel.updateRidePreference(newPreference);
+
+      // 3 -   Update the widget state  - TODO Improve this with proper state managagement
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = context.watch<RideSelectionViewModel>();
     final matchingRides = viewModel.matchingRides(
       viewModel.selectedRidePreference,
     );
