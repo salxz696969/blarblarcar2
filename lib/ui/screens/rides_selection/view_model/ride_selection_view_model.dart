@@ -32,7 +32,6 @@ class RideSelectionViewModel extends ChangeNotifier {
 
   void updateRidePreference(RidePreference newPreference) {
     ridePreferenceState.setRidePreference(newPreference);
-    notifyListeners();
   }
 
   void onRideSelected(Ride ride) {
