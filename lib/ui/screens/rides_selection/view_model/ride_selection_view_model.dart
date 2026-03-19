@@ -36,4 +36,10 @@ class RideSelectionViewModel extends ChangeNotifier {
   void onRideSelected(Ride ride) {
     // Later
   }
+
+  @override
+  void dispose() {
+    ridePreferenceState.dispose();
+    super.dispose();
+  }
 }

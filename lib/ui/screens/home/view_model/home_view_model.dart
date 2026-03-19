@@ -15,4 +15,10 @@ class HomeViewModel extends ChangeNotifier {
     ridePreferenceState.setRidePreference(preference);
     notifyListeners();
   }
+
+  @override
+  void dispose() {
+    ridePreferenceState.dispose();
+    super.dispose();
+  }
 }
