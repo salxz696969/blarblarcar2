@@ -15,8 +15,12 @@ class RideSelectionViewModel extends ChangeNotifier {
     ridePreferenceState.addListener(notifyListeners);
   }
 
-  RidePreference get selectedRidePreference =>
-      ridePreferenceState.ridePreference!;
+  RidePreference selectedRidePreference() {
+    return ridePreferenceState.ridePreference ??
+        (ridePreferenceState.history.isNotEmpty
+            ? ridePreferenceState.history.last
+            : throw StateError('No ride preference available'));
+  }
 
   List<Ride> matchingRides(RidePreference preferences) {
     return rideRepository

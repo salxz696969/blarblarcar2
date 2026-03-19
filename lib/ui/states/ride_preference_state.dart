@@ -16,7 +16,10 @@ class RidePreferenceState extends ChangeNotifier {
   int get maxAllowedSeats => 8;
 
   void initHistory() {
-    _history = ridePrefRepository.ridePreferences;
+    _history = List<RidePreference>.from(ridePrefRepository.ridePreferences);
+    if (_history.isNotEmpty) {
+      _currentRidePreference = _history.last;
+    }
   }
 
   void setRidePreference(RidePreference ridePreference) {

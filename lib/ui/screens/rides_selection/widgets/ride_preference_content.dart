@@ -39,7 +39,7 @@ class RidesSelectionContent extends StatelessWidget {
         .push<RidePreference>(
           AnimationUtils.createRightToLeftRoute(
             RidePreferenceModal(
-              initialPreference: viewModel.selectedRidePreference,
+              initialPreference: viewModel.selectedRidePreference(),
             ),
           ),
         );
@@ -55,7 +55,7 @@ class RidesSelectionContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final matchingRides = viewModel.matchingRides(
-      viewModel.selectedRidePreference,
+      viewModel.selectedRidePreference(),
     );
     return Scaffold(
       body: Padding(
@@ -67,7 +67,7 @@ class RidesSelectionContent extends StatelessWidget {
         child: Column(
           children: [
             RideSelectionHeader(
-              ridePreference: viewModel.selectedRidePreference,
+              ridePreference: viewModel.selectedRidePreference(),
               onBackPressed: () => onBackTap(context),
               onFilterPressed: onFilterPressed,
               onPreferencePressed: () =>
