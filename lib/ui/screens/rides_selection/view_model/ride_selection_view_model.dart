@@ -11,7 +11,9 @@ class RideSelectionViewModel extends ChangeNotifier {
   RideSelectionViewModel({
     required this.ridePreferenceState,
     required this.rideRepository,
-  });
+  }) {
+    ridePreferenceState.addListener(notifyListeners);
+  }
 
   RidePreference get selectedRidePreference =>
       ridePreferenceState.ridePreference!;
@@ -39,7 +41,7 @@ class RideSelectionViewModel extends ChangeNotifier {
 
   @override
   void dispose() {
-    ridePreferenceState.dispose();
+    ridePreferenceState.removeListener(notifyListeners);
     super.dispose();
   }
 }
