@@ -3,7 +3,7 @@ import 'package:blabla/model/user/user.dart';
 
 class UserRepositoryMock implements UserRepository {
   // Fake  Users
-  List<User> _fakeUsers = [
+  final List<User> _fakeUsers = [
     User(
       id: 1,
       firstName: "Alice",

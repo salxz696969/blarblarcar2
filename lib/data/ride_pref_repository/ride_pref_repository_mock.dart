@@ -5,7 +5,7 @@ import 'package:blabla/model/ride_pref/ride_pref.dart';
 class RidePrefRepositoryMock implements RidePrefRepository {
   final LocationRepository locationRepository;
 
-  RidePrefRepositoryMock(this.locationRepository);
+  RidePrefRepositoryMock({required this.locationRepository});
 
   late final List<RidePreference> _ridePreferences = [
     RidePreference(

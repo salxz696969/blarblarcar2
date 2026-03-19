@@ -13,7 +13,9 @@ import 'main_common.dart';
 List<InheritedProvider> get devProviders {
   final locationRepository = LocationRepositoryMock();
   final userRepository = UserRepositoryMock();
-  final ridePrefRepository = RidePrefRepositoryMock(locationRepository);
+  final ridePrefRepository = RidePrefRepositoryMock(
+    locationRepository: locationRepository,
+  );
   
   return [
     Provider<LocationRepository>(create: (context) => locationRepository),
@@ -21,8 +23,10 @@ List<InheritedProvider> get devProviders {
       create: (context) => ridePrefRepository,
     ),
     Provider<RideRepository>(
-      create: (context) =>
-          RideRepositoryMock(locationRepository, userRepository),
+      create: (context) => RideRepositoryMock(
+        locationRepository: locationRepository,
+        userRepository: userRepository,
+      ),
     ),
     ChangeNotifierProvider<RidePreferenceState>(
       create: (context) => RidePreferenceState(ridePrefRepository: ridePrefRepository ),

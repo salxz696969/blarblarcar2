@@ -1,15 +1,18 @@
-import 'package:blabla/data/location_repository/location_repository_mock.dart';
+import 'package:blabla/data/location_repository/location_repository.dart';
 import 'package:blabla/data/ride_repository/ride_repository.dart';
-import 'package:blabla/data/user_repository/user_repository_mock.dart';
+import 'package:blabla/data/user_repository/user_repository.dart';
 import 'package:blabla/model/ride/ride.dart';
 
 class RideRepositoryMock implements RideRepository {
-  final LocationRepositoryMock locationRepository;
-  final UserRepositoryMock userRepository;
+  final LocationRepository locationRepository;
+  final UserRepository userRepository;
 
-  RideRepositoryMock(this.locationRepository, this.userRepository);
+  RideRepositoryMock({
+    required this.locationRepository,
+    required this.userRepository,
+  });
 
-  List<Ride> get fakeRides => [
+  late final List<Ride> fakeRides = [
     Ride(
       departureLocation: locationRepository.locations[0], // London
       departureDate: DateTime.now().add(Duration(hours: 3)),
